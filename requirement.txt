@@ -1,0 +1,7 @@
+Django==5.0.14
+djangorestframework==3.16.0
+djangorestframework-simplejwt==5.3.1  # JWT Auth
+psycopg2-binary==2.9.9               # PostgreSQL adapter
+django-cors-headers==4.7.0
+requests==2.32.4
+django-cors-headers==4.7.0
