@@ -4,13 +4,13 @@ A Django REST API for financial risk assessment and management.
 
 ## Project Overview
 
-•	users: Represents a person using the application. This will handle authentication and authorization.
-•	FinancialProfile: A central table that links a User to all their financial data. This ensures all financial records are tied to a single user.
-•	Income: Represents a source of income for a user (e.g., salary, freelance).
-•	Expense: Represents a recurring monthly expense for a user (e.g., rent, gym membership).
-•	Debt: Represents a user's outstanding debt (e.g., credit card, student loan).
-•	Asset: Represents a user's financial assets (e.g., savings account, investment).
-•	RiskAssessmentHistory: Stores a snapshot of a user's risk score and the date it was calculated.
+- users: Represents a person using the application. This will handle authentication and authorization.
+- FinancialProfile: A central table that links a User to all their financial data. This ensures all financial records are tied to a single user.
+- Income: Represents a source of income for a user (e.g., salary, freelance).
+- Expense: Represents a recurring monthly expense for a user (e.g., rent, gym membership).
+- Debt: Represents a user's outstanding debt (e.g., credit card, student loan).
+- Asset: Represents a user's financial assets (e.g., savings account, investment).
+- RiskAssessmentHistory: Stores a snapshot of a user's risk score and the date it was calculated.
 
 
 ## Tech Stack
