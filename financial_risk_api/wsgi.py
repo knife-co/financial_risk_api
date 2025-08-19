@@ -11,7 +11,7 @@ import os
 from django.core.wsgi import get_wsgi_application
 
 # Set default to production for WSGI (since this is typically used in production)
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'financial_risk_api.settings.prod')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'financial_risk_api.settings.dev')
 
 
 application = get_wsgi_application()

@@ -11,6 +11,6 @@ import os
 from django.core.asgi import get_asgi_application
 
 # Set default to production for ASGI (since this is typically used in production)
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'financial_risk_api.settings.prod')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'financial_risk_api.settings.dev')
 
 application = get_asgi_application()

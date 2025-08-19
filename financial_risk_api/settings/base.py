@@ -49,9 +49,9 @@ INSTALLED_APPS = [
     'Debt',
     'Expense',
     'FinancialProfile',
-    'Income'
+    'Income',
     'RiskAssessmentHistory',
-    'users'
+    'users',
 ]
 
 MIDDLEWARE = [
