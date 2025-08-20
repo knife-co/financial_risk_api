@@ -29,18 +29,45 @@ financial_risk_api/
 ├── .env.prod                   # Production environment variables  
 ├── financial_risk_api/         # Main project directory
 │   ├── settings/              # Split settings
+│   │   ├── __init__.py
 │   │   ├── base.py
 │   │   ├── dev.py
 │   │   └── prod.py
+│   ├── __init__.py
 │   ├── urls.py
 │   ├── wsgi.py
 │   └── asgi.py
-├── Asset/                      # Asset management app
-├── Debt/                       # Debt tracking app
-├── Expense/                    # Expense management app
-├── Income/                     # Income tracking app
-├── FinancialProfile/           # User financial profiles
-├── RiskAssessmentHistory/      # Risk assessment records
-└── users/                      # User management
+├── users/                      # User management app
+│   ├── __init__.py
+│   ├── admin.py
+│   ├── apps.py
+│   ├── models.py              # User model (if custom)
+│   ├── serializers.py         # User serializers (registration, login, etc.)
+│   ├── views.py               # Authentication views
+│   ├── urls.py                # User-related URLs
+│   ├── migrations/
+│   │   └── __init__.py
+│   └── tests.py
+├── financialProfile/                  # Financial management app (consolidated)
+│   ├── __init__.py
+│   ├── admin.py
+│   ├── apps.py
+│   ├── models.py              # All financial models:
+│   │                          #   - FinancialProfile
+│   │                          #   - Income
+│   │                          #   - Expense  
+│   │                          #   - Debt
+│   │                          #   - Asset
+│   │                          #   - RiskAssessmentHistory
+│   ├── serializers.py         # All financial serializers
+│   ├── views.py               # All financial views/viewsets
+│   ├── urls.py                # Financial API endpoints
+│   ├── migrations/
+│   │   └── __init__.py
+│   └── tests.py
+└── static/                     # Static files (optional)
+    └── css/
+    └── js/
+    └── images/                 # User management
 ```
 
