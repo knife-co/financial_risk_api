@@ -33,4 +33,7 @@ urlpatterns = [
     # Custom endpoints
     path('summary/', views.financial_summary, name='financial-summary'),
     path('bulk-create/', views.bulk_create_financial_data, name='bulk-create-financial-data'),
+
+    # Risk calculator
+    path('calculate-risk-assessment/', views.calculate_risk_assessment, name='calculate-risk-assessment'),
 ]

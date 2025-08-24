@@ -35,6 +35,23 @@ class FinancialProfile(models.Model):
         return f"Financial Profile for {self.user.username}"
     
     # Profile management methods
+
+    def create_risk_assessment(self):
+        """Create a new risk assessment for this profile"""
+        from .risk_calculator import FinancialRiskCalculator  # Import here to avoid circular imports
+        
+        calculator = FinancialRiskCalculator(self)
+        score = calculator.calculate_risk_score()
+        summary = calculator.generate_risk_summary()
+        
+        assessment = RiskAssessmentHistory.objects.create(
+            profile=self,
+            score=score,
+            summary=summary
+        )
+        
+        return assessment
+
     def update_last_assessed(self):
         """Update the last assessment timestamp"""
         self.last_assessed = timezone.now()
@@ -374,3 +391,6 @@ class RiskAssessmentHistory(models.Model):
             'very_high': '#ef4444',   # Red
         }
         return colors.get(self.risk_level, '#6b7280')  # Default gray
+
+        
+    

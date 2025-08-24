@@ -316,3 +316,27 @@ def bulk_create_financial_data(request):
             {'error': 'Financial profile not found'}, 
             status=status.HTTP_404_NOT_FOUND
         )
+
+@api_view(['POST'])
+@permission_classes([permissions.IsAuthenticated])
+def calculate_risk_assessment(request):
+    """Calculate and create a new risk assessment"""
+    try:
+        profile = FinancialProfile.objects.get(user=request.user)
+        
+        if not profile.has_complete_profile():
+            return Response(
+                {'error': 'Profile incomplete. Please add income, expenses, and debt/asset information.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        assessment = profile.create_risk_assessment()
+        serializer = RiskAssessmentHistorySerializer(assessment)
+        
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
+    except FinancialProfile.DoesNotExist:
+        return Response(
+            {'error': 'Financial profile not found'}, 
+            status=status.HTTP_404_NOT_FOUND
+        )
