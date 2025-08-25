@@ -1,7 +1,4 @@
-# Create a new app for financial models
-# Run: python manage.py startapp financial
-
-# financial/models.py
+# FinancialProfile/models.py
 
 from django.db import models
 from django.contrib.auth import get_user_model
@@ -10,6 +7,12 @@ from decimal import Decimal
 from django.utils import timezone
 
 User = get_user_model()
+
+try:
+    from .risk_calculator import FinancialRiskCalculator
+except ImportError:
+    # Handle the case where the import might fail during migrations
+    FinancialRiskCalculator = None
 
 
 class FinancialProfile(models.Model):
@@ -33,23 +36,30 @@ class FinancialProfile(models.Model):
     
     def __str__(self):
         return f"Financial Profile for {self.user.username}"
-    
-    # Profile management methods
 
     def create_risk_assessment(self):
-        """Create a new risk assessment for this profile"""
-        from .risk_calculator import FinancialRiskCalculator  # Import here to avoid circular imports
-        
+        """Create a new risk assessment for this profile, avoiding duplicates within 1 minute."""
+        from django.utils import timezone
+        now = timezone.now()
+        one_min_ago = now - timezone.timedelta(minutes=1)
+        recent_assessment = self.risk_assessments.filter(assessment_date__gte=one_min_ago).first()
+        if recent_assessment:
+            return recent_assessment
+
+        global FinancialRiskCalculator
+        if FinancialRiskCalculator is None:
+            from .risk_calculator import FinancialRiskCalculator
+
         calculator = FinancialRiskCalculator(self)
         score = calculator.calculate_risk_score()
         summary = calculator.generate_risk_summary()
-        
+
         assessment = RiskAssessmentHistory.objects.create(
             profile=self,
             score=score,
             summary=summary
         )
-        
+
         return assessment
 
     def update_last_assessed(self):
@@ -144,9 +154,9 @@ class Income(models.Model):
     
     class Meta:
         ordering = ['-created_at']
-    
+
     def __str__(self):
-        return f"{self.source_name}: ${self.amount} ({self.frequency})"
+        return f"Income({self.source_name}, {self.amount}, {self.frequency})"
     
     def get_monthly_amount(self):
         """Convert any frequency to monthly amount"""
@@ -206,9 +216,9 @@ class Expense(models.Model):
     
     class Meta:
         ordering = ['-created_at']
-    
+
     def __str__(self):
-        return f"{self.get_category_display()}: ${self.amount} ({self.frequency})"
+        return f"Expense({self.category}, {self.amount}, {self.frequency})"
     
     def get_monthly_amount(self):
         """Convert any frequency to monthly amount"""
@@ -271,9 +281,9 @@ class Debt(models.Model):
     
     class Meta:
         ordering = ['-created_at']
-    
+
     def __str__(self):
-        return f"{self.debt_name}: ${self.remaining_balance} remaining"
+        return f"Debt({self.debt_name}, {self.debt_type}, {self.remaining_balance})"
     
     def get_debt_ratio(self):
         """Calculate what percentage of original debt remains"""
@@ -320,9 +330,9 @@ class Asset(models.Model):
     
     class Meta:
         ordering = ['-created_at']
-    
+
     def __str__(self):
-        return f"{self.asset_name}: ${self.value}"
+        return f"Asset({self.asset_name}, {self.asset_type}, {self.value})"
     
     def is_liquid_asset(self):
         """Check if asset is easily convertible to cash"""
@@ -360,7 +370,7 @@ class RiskAssessmentHistory(models.Model):
         ordering = ['-assessment_date']
     
     def __str__(self):
-        return f"Risk Assessment {self.score} for {self.profile.user.username} on {self.assessment_date.date()}"
+        return f"RiskAssessment({self.profile.user.username}, {self.score}, {self.risk_level}, {self.assessment_date})"
     
     def save(self, *args, **kwargs):
         """Automatically set risk level based on score"""

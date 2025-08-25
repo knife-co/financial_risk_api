@@ -6,4 +6,4 @@ class FinancialprofileConfig(AppConfig):
     name = 'FinancialProfile'
 
     def ready(self):
-            import FinancialProfile.signals
+        import FinancialProfile.signals

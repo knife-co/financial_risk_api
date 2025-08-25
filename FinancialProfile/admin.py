@@ -1,4 +1,4 @@
-# financial/admin.py
+# FinancialProfile/admin.py
 
 from django.contrib import admin
 from .models import FinancialProfile, Income, Expense, Debt, Asset, RiskAssessmentHistory
@@ -42,7 +42,7 @@ class FinancialProfileAdmin(admin.ModelAdmin):
     search_fields = ['user__username', 'user__email']
     readonly_fields = ['created_at', 'updated_at', 'get_total_income', 'get_total_expenses', 'get_net_worth', 'get_debt_to_income_ratio']
     
-    inlines = [IncomeInline, ExpenseInline, DebtInline, AssetInline, RiskAssessmentInline]
+    inlines = [IncomeInline, ExpenseInline, DebtInline, AssetInline]
     
     fieldsets = (
         ('Profile Information', {
@@ -62,6 +62,8 @@ class FinancialProfileAdmin(admin.ModelAdmin):
         score = obj.get_latest_risk_score()
         return score if score is not None else 'Not assessed'
     get_latest_risk_score.short_description = 'Latest Risk Score'
+
+    # Removed risk assessment creation logic to avoid duplicates; signals handle creation.
 
 
 @admin.register(Income)
@@ -112,4 +114,12 @@ class RiskAssessmentHistoryAdmin(admin.ModelAdmin):
     
     def has_add_permission(self, request):
         # Risk assessments should be created through the API, not admin
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        # Prevent editing
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        # Prevent deletion
         return False

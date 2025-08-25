@@ -1,4 +1,4 @@
-# financial/urls.py
+# FinancialProfile/urls.py
 
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
@@ -34,6 +34,6 @@ urlpatterns = [
     path('summary/', views.financial_summary, name='financial-summary'),
     path('bulk-create/', views.bulk_create_financial_data, name='bulk-create-financial-data'),
 
-    # Risk calculator
+    # Risk calculator endpoints
     path('calculate-risk-assessment/', views.calculate_risk_assessment, name='calculate-risk-assessment'),
 ]

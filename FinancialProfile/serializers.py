@@ -1,4 +1,4 @@
-# financial/serializers.py
+# FinancialProfile/serializers.py
 
 from rest_framework import serializers
 from .models import FinancialProfile, Income, Expense, Debt, Asset, RiskAssessmentHistory
