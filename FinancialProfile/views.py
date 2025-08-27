@@ -23,7 +23,10 @@ class FinancialProfileListCreateView(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
     
     def get_queryset(self):
-        return FinancialProfile.objects.filter(user=self.request.user)
+        user = self.request.user
+        if user.is_staff:
+            return FinancialProfile.objects.all()
+        return FinancialProfile.objects.filter(user=user)
     
     def get_serializer_class(self):
         if self.request.method == 'GET':

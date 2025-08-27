@@ -19,6 +19,8 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api-auth/', include('rest_framework.urls')),  # Enables browsable API login/logout
+    path('api/financial/', include('FinancialProfile.urls')),
     
     # API endpoints
     path('api/users/', include('users.urls')),

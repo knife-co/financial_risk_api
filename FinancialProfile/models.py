@@ -117,11 +117,12 @@ class FinancialProfile(models.Model):
         return latest_assessment.score if latest_assessment else None
     
     def has_complete_profile(self):
-        """Check if profile has minimum required data for assessment"""
+        """Check if profile has minimum required data for assessment: must have income, expense, debt, and asset."""
         return (
             self.incomes.exists() and
             self.expenses.exists() and
-            (self.debts.exists() or self.assets.exists())
+            self.debts.exists() and
+            self.assets.exists()
         )
 
 

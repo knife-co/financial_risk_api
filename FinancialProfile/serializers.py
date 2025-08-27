@@ -134,18 +134,22 @@ class FinancialProfileSummarySerializer(serializers.ModelSerializer):
 
 # Nested serializers for creating related objects
 class IncomeCreateSerializer(serializers.ModelSerializer):
+    frequency = serializers.ChoiceField(choices=Income.FREQUENCY_CHOICES, required = True)
     class Meta:
         model = Income
         fields = ['source_name', 'amount', 'frequency']
 
 
 class ExpenseCreateSerializer(serializers.ModelSerializer):
+    category = serializers.ChoiceField(choices=Expense.CATEGORY_CHOICES, required=True)
+    frequency = serializers.ChoiceField(choices=Expense.FREQUENCY_CHOICES, required=True)
     class Meta:
         model = Expense
         fields = ['category', 'amount', 'frequency']
 
 
 class DebtCreateSerializer(serializers.ModelSerializer):
+    debt_type = serializers.ChoiceField(choices=Debt.DEBT_TYPE_CHOICES, required=True)
     class Meta:
         model = Debt
         fields = ['debt_name', 'debt_type', 'total_amount', 'remaining_balance', 'minimum_amount', 'interest_rate']
@@ -159,6 +163,7 @@ class DebtCreateSerializer(serializers.ModelSerializer):
 
 
 class AssetCreateSerializer(serializers.ModelSerializer):
+    asset_type = serializers.ChoiceField(choices=Asset.ASSET_TYPE_CHOICES)
     class Meta:
         model = Asset
         fields = ['asset_name', 'asset_type', 'value']
