@@ -213,6 +213,10 @@ def financial_summary(request):
     try:
         profile = FinancialProfile.objects.get(user=request.user)
         
+        from .risk_calculator import FinancialRiskCalculator
+        calculator = FinancialRiskCalculator(profile)
+        calculator.calculate_risk_score()  # Populates risk_factors
+
         summary_data = {
             'profile_id': profile.id,
             'user': profile.user.username,
@@ -225,6 +229,7 @@ def financial_summary(request):
                 'net_worth': profile.get_net_worth(),
                 'debt_to_income_ratio': profile.get_debt_to_income_ratio(),
             },
+            'risk_factors': calculator.risk_factors,
             'counts': {
                 'income_sources': profile.incomes.count(),
                 'expense_categories': profile.expenses.count(),
