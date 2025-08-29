@@ -1,5 +1,5 @@
 
-# Financial Risk API
+# Personal Financial Risk API
 
 A Django REST API that empowers users to track, analyze, and manage their personal finances. The system aggregates income, expenses, debts, and assets, then calculates a comprehensive financial risk score using multiple factors. Users receive actionable insights, historical risk tracking, and secure authentication, making it ideal for personal finance management, advisory platforms, or financial wellness applications.
 
